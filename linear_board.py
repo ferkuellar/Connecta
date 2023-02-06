@@ -6,6 +6,12 @@ class LinearBoard():
     # X UN JUGADOR 
     # O OTRO JUGADOR
     # None UN ESPACIO VACIO
+
+    @classmethod
+    def fromList(cls, list):
+        board = cls()
+        board._column = list
+        return board
     
     def __init__(self):
     # UNA LISTA DE None
