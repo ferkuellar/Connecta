@@ -52,3 +52,9 @@ def find_streak(list, needle, n):
         # Para valores de n < 0 ,  no tiene sentido
         return False
 
+def first_elements(list_of_list):
+    #Recibe una lista de listas y devuelve una lista con los primero elementos elementos de la original
+    result = []
+    for list in list_of_list:
+        result.append(list[0])
+    return result
