@@ -6,35 +6,35 @@ def test_empty_board():
     empty = LinearBoard()
     assert empty != None
     assert empty.is_full() == False
-    assert empty.is_victory('X') == False
+    assert empty.is_victory('x') == False
 
 
 def test_add():
     b = LinearBoard()
     for i in range(BOARD_LENGTH):
-        b.add('X')
+        b.add('x')
     assert b.is_full() == True
 
 def test_victory():
     b = LinearBoard()
     for i in range(VICTORY_STRIKE):
-        b.add('X')
-    assert b.is_victory('O') == False
-    assert b.is_victory('X') == True
+        b.add('x')
+    assert b.is_victory('o') == False
+    assert b.is_victory('x') == True
     
 def test_tie():
     b = LinearBoard()
 
-    b.add('O')
-    b.add('O')
-    b.add('X')
-    b.add('O')
+    b.add('o')
+    b.add('o')
+    b.add('x')
+    b.add('o')
 
-    assert b.is_tie('X', 'O')
+    assert b.is_tie('x', 'o')
 
 def test_add_to_full():
     full = LinearBoard()
     for i in range(BOARD_LENGTH):
         full.add('x')
-    full.add('X')
+    full.add('x')
     assert full.is_full()

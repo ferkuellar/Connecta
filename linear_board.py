@@ -37,4 +37,4 @@ class LinearBoard():
     
     def is_tie(self, char1, char2):
         # NO HAY VISTORIA NI CHAR1 NI DE CHAR2
-        return (self.is_victory('X') == False) and (self.is_victory('O') == False)
+        return (self.is_victory('x') == False) and (self.is_victory('o') == False)

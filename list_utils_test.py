@@ -20,7 +20,7 @@ def test_find_n():
     assert find_n([1, 2, 3, 4, 5], 1, 2) == False
     assert find_n([1, 2, 3, 2, 4 ,5], 2, 2)
     assert find_n([1, 2, 3, 4, 5, 4, 6, 4, 7, 4, 6], 4 , 2)
-    assert find_n([1, 2, 3, 4], 'X', 0) == True
+    assert find_n([1, 2, 3, 4], 'x', 0) == True
 
 def test_find_streak():
     assert find_streak([1, 2, 3, 4, 5], 4, -1) == False
@@ -46,8 +46,7 @@ def test_transpose():
 def test_zero_distance_displace():
     l1 = [1, 2, 3, 4, 5, 6]
     l2 = [1]
-    l3 = [[4, 5], ['X', 'O', 'c']]
-
+    l3 = [[4, 5], ['x', 'o', 'c']]
     assert displace([], 0) == []
     assert displace(l1, 0) == l1
     assert displace(l2, 0) == l2

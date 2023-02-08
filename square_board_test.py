@@ -8,22 +8,24 @@ def test_empty_board():
     board = SquareBoard()
 
     assert board.is_full() == False
-    assert board.is_victory('O') == False
-    assert board.is_victory('X') == False
+    assert board.is_victory('o') == False
+    assert board.is_victory('x') == False
 
 
 def test_vertical_victory():
-    vertical = SquareBoard.fromList([['O', 'X', 'X', 'X', ],
+    
+    vertical = SquareBoard.fromList([['o', 'x', 'x', 'x', ],
                                     [None, None, None, None, ],
                                     [None, None, None, None, ],
                                     [None, None, None, None, ],
                                     [None, None, None, None, ]])
     
-    assert vertical.is_victory('X')
-    assert vertical.is_victory('O') == False
+    assert vertical.is_victory('x')
+    assert vertical.is_victory('o') == False
 
 
 def test_horizontal_victory():
+
     horizontal_victory = SquareBoard.fromList([['x', None, None, None, None, ],
                                                 ['x', None, None, None, None, ],
                                                 ['x', 'o', None, None, None, ],
@@ -34,6 +36,7 @@ def test_horizontal_victory():
 
 
 def test_sinking_victory():
+
     sinking_victory = SquareBoard.fromList([['x', 'o', 'x', 'o', ],
                                             ['x', 'x', 'o', None, ],
                                             ['o', 'o', None, None, ],
