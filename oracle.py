@@ -23,19 +23,17 @@ class ColumnRecommendation():
 class BaseOracle():
 
     def get_recommendation(self, board, player):
-        """
-        Returns a list of ColumnRecommendations
-        """
+        # Returns a list of ColumnRecommendations
+        
         recommendations = []
         for i in range(len(board)):
             recommendations.append(
                 self._get_column_recommendation(board, i, player))
         return recommendations
-    
+
     def _get_column_recommendation(self, board, index, player):
-        """
-        Classifies a column as either FULL or MAYBE and returns an ColumnRecommendation
-        """
+        # Classifies a column as either FULL or MAYBE and returns an ColumnRecommendation
+        
         classification = ColumnClassification.MAYBE
         if board._columns[index].is_full():
             classification = ColumnClassification.FULL

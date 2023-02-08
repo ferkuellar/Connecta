@@ -17,7 +17,7 @@ class SquareBoard():
         self._columns = [LinearBoard() for i in range(BOARD_LENGTH)]
 
     def __repr__(self):
-        return f'{self.__class__}: {self._columns}'
+        return f'{self.__class__}:{self._columns}'
 
     def __len__(self):
         return len(self._columns)
@@ -34,6 +34,10 @@ class SquareBoard():
     def as_matrix(self):
         #devuelve una represenatcion en formato matiz es decir lista de listas
         return list(map(lambda x: x._column, self._columns))
+    
+    # juega una ficha en una columna
+    def add(self, char, column):
+        self._columns[column].add(char)
 
     
     # Detetctar victoria
