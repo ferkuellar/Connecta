@@ -22,3 +22,18 @@ class Player():
         valid = list(filter(lambda x : x.classification != ColumnClassification.FULL, recomendations))
         # Agarramos la primera de las validas
         return valid[0]        
+    
+# funciones de validacion de indice de columna
+
+def _is_non_full_column(board, num):
+    return not board._columns[num].is_full()
+
+def _is_within_column_range(board, num):
+    return num >= 0 and num < len(board)
+
+def _is_int(aString):
+    try:
+        num = int(aString)
+        return True
+    except:
+        return False
