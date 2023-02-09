@@ -10,12 +10,27 @@ class Player():
         self._oracle = oracle
 
     def play(self, board):
-        # recomdendaciones del oraculo
+        # Elije la mejor columna de aquellas que recomienda el oraculo
+
+        # Pregunto al oraculo () primeros es una tupla
+        (best, recommendations) = self._ask_oracle(board)
+        # Juego en la mejor
+        self._play_on(board, best.index)
+
+    def _play_on(self, board, postion):
+        # juega en la posicion
+        board.add(self.char, postion)
+
+    def _ask_oracle(self, board):
+        # pregunta al oraculo y devuelve la mejor opcion
+
+        # obtenemos las recomendaciones
         recommendations = self._oracle.get_recommendation(board, self)
-        # selecciono la mejor opcion
+        # seleccionamos la mejor
         best = self._choose(recommendations)
-        # juego en ella
-        board.add(self.char, best.index)
+        return(best, recommendations)
+
+
 
     def _choose(self, recomendations):
         # Quitamos la no validas
@@ -37,3 +52,4 @@ def _is_int(aString):
         return True
     except:
         return False
+    
