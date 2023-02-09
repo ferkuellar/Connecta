@@ -18,6 +18,18 @@ class LinearBoard():
         
         self._column =[None for i in range(BOARD_LENGTH)]
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        else:
+            return self._column == other._column
+
+    def __hash__(self):
+        return hash(self._column)
+
+    def __repr__(self):
+        return f'<{self.__class__}: {self._column}>'
+
     def add(self, char):
     # JUEGA EN LA PRIMERA POSICION DESIPONIBLE
     
@@ -27,7 +39,7 @@ class LinearBoard():
             i = self._column.index(None)
             #LO SUSTIUIMIOS POR CAHR
             self._column[i] = char
-
+            
 
     def is_full(self):
         return self._column[-1] != None

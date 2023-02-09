@@ -19,6 +19,9 @@ class ColumnRecommendation():
         
     def __hash__(self) -> int:
         return hash((self.index, self.classification))
+    
+    def __repr__(self):
+        return f'{self.__class__}:{self.classification}'
 
 class BaseOracle():
 

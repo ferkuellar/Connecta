@@ -13,10 +13,12 @@ class Player():
         # recomdendaciones del oraculo
         recommendations = self._oracle.get_recommendation(board, self)
         # selecciono la mejor opcion
+        best = self._choose(recommendations)
         # juego en ella
-        pass
+        board.add(self.char, best.index)
 
-    def _chose(self, recomendations):
-        # seleccionar la mejor opcion de la lista
-        # de recomendaciones
-        pass
+    def _choose(self, recomendations):
+        # Quitamos la no validas
+        valid = list(filter(lambda x : x.classification != ColumnClassification.FULL, recomendations))
+        # Agarramos la primera de las validas
+        return valid[0]        

@@ -21,7 +21,15 @@ class SquareBoard():
 
     def __len__(self):
         return len(self._columns)
-
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        else:
+            return self._columns == other._columns
+    
+    def __hash__(self):
+        return hash(self._columns)
 
     def is_full(self):
         # True si todos los LinearBoard estan llenos
@@ -58,7 +66,7 @@ class SquareBoard():
     
     def _any_rising_victory(self, char):
         # Obtener las columnas
-        m = self.as_matrix
+        m = self.as_matrix()
         # Las invertimos
         rm = reverse_matrix(m)
         # Creamos tablero temporal con esa matriz
