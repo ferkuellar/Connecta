@@ -4,7 +4,7 @@ from oracle import BaseOracle, ColumnClassification, ColumnRecommendation
 class Player():
     # juega en un tablero despues de preguntar al oraculo
 
-    def __init__(self, name, char, oracle=BaseOracle()) -> None:
+    def __init__(self, name, char = None, oracle=BaseOracle()) -> None:
         self.name = name
         self.char = char
         self._oracle = oracle
@@ -39,8 +39,8 @@ class Player():
         return valid[0]     
 
 class HumanPlayer(Player):
-    def __init__(self, name, char):
-        super.__init__(name, char)
+    def __init__(self, name, char = None):
+        super().__init__(name, char)
 
     def _ask_oracle(self, board):
         # Le pido al humano que es mi oraculo

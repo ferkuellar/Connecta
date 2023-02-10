@@ -1,5 +1,6 @@
 import pytest
 from player import Player
+from match import Match
 
 fernando = Player('Fernando')
 otto = Player('Dr Cuellar')
