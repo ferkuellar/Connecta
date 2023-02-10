@@ -3,9 +3,6 @@ from oracle import BaseOracle
 from player import Player, _is_int, _is_non_full_column, _is_within_column_range
 
 
-
-
-
 def test_valid_column():
     board = SquareBoard.fromList([['x', None, None, None, ],
                                 ['x', 'o', 'x', 'o', ],

@@ -36,8 +36,26 @@ class Player():
         # Quitamos la no validas
         valid = list(filter(lambda x : x.classification != ColumnClassification.FULL, recomendations))
         # Agarramos la primera de las validas
-        return valid[0]        
-    
+        return valid[0]     
+
+class HumanPlayer(Player):
+    def __init__(self, name, char):
+        super.__init__(name, char)
+
+    def _ask_oracle(self, board):
+        # Le pido al humano que es mi oraculo
+
+        while True:
+            # pedimos columna al humano
+            raw = input('Select a column, puny Human: ')
+            #verificacmos que su respuesta sno sea una pendejada
+            if _is_int(raw) and _is_within_column_range(board, int(raw)) and _is_non_full_column(board, int(raw)):
+                # si no lo es, jugamos donde ha dicho y salimos del bucle
+                pos = int(raw)
+                return(ColumnRecommendation(pos, None), None)
+            
+
+
 # funciones de validacion de indice de columna
 
 def _is_non_full_column(board, num):
