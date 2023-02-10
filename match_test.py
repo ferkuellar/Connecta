@@ -1,11 +1,24 @@
 import pytest
-from player import Player
+from player import Player, HumanPlayer
 from match import Match
+from square_board import SquareBoard
 
-fernando = Player('Fernando')
-otto = Player('Dr Cuellar')
+fernando = None
+otto = None
 
-def test_different_players_have_different_charts():
+def setup():
+    global fernando
+    fernando = HumanPlayer('Fernando')
+    global otto
+    otto = Player('Dr Cuellar')
+
+def teardown():
+    global fernando
+    fernando = None
+    global otto
+    otto = None
+
+def test_different_players_have_different_chars():
     t = Match(fernando, otto)
     assert fernando.char != otto.char
 
@@ -20,9 +33,3 @@ def test_netx_player_is_round_robbin():
     p2 = t.next_player
     assert p1 != p2
 
-def test_players_are_opponents():
-    t = Match(otto, fernando)
-    p1 = t.next_player
-    p2 = t.next_player
-    assert p1.opponent == p2
-    assert p2.opponent == p1

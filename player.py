@@ -4,10 +4,21 @@ from oracle import BaseOracle, ColumnClassification, ColumnRecommendation
 class Player():
     # juega en un tablero despues de preguntar al oraculo
 
-    def __init__(self, name, char = None, oracle=BaseOracle()) -> None:
+    def __init__(self, name, char = None, opponent = None, oracle=BaseOracle()) -> None:
         self.name = name
         self.char = char
         self._oracle = oracle
+        self.opponent = opponent
+
+    @property
+    def opponent(self):
+        return self._opponent
+    
+    @opponent.setter
+    def opponent(self, other):
+        if other != None:
+            self._opponent = other
+            other._opponent = self
 
     def play(self, board):
         # Elije la mejor columna de aquellas que recomienda el oraculo
