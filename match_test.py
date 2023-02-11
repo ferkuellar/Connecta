@@ -6,6 +6,7 @@ from square_board import SquareBoard
 fernando = None
 otto = None
 
+
 def setup():
     global fernando
     fernando = HumanPlayer('Fernando')

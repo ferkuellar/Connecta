@@ -1,4 +1,5 @@
-from oracle import BaseOracle, ColumnClassification, ColumnRecommendation 
+from oracle import BaseOracle, ColumnClassification, ColumnRecommendation
+import random
 
 
 class Player():
@@ -9,6 +10,7 @@ class Player():
         self.char = char
         self._oracle = oracle
         self.opponent = opponent
+        self.last_move = None
 
     @property
     def opponent(self):
@@ -26,11 +28,13 @@ class Player():
         # Pregunto al oraculo () primeros es una tupla
         (best, recommendations) = self._ask_oracle(board)
         # Juego en la mejor
-        self._play_on(board, best.index)
+        self._play_on(board, best.index, recommendations)
 
-    def _play_on(self, board, postion):
+    def _play_on(self, board, position):
         # juega en la posicion
-        board.add(self.char, postion)
+        board.add(self.char, position)
+        # guardo mi ultima jugada
+        self.last_move = position
 
     def _ask_oracle(self, board):
         # pregunta al oraculo y devuelve la mejor opcion
@@ -41,13 +45,11 @@ class Player():
         best = self._choose(recommendations)
         return(best, recommendations)
 
-
-
     def _choose(self, recomendations):
         # Quitamos la no validas
         valid = list(filter(lambda x : x.classification != ColumnClassification.FULL, recomendations))
-        # Agarramos la primera de las validas
-        return valid[0]     
+        # seeccionamos entre las iguales, una al azar
+        return random.choice(valid)  
 
 class HumanPlayer(Player):
     def __init__(self, name, char = None):

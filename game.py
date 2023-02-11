@@ -2,7 +2,10 @@ import pyfiglet
 from enum import Enum, auto
 from match import Match
 from player import Player, HumanPlayer
+from settings import BOARD_LENGTH
 from square_board import SquareBoard
+from list_utils import reverse_matrix
+from beautifultable import BeautifulTable
 
 class RoundType(Enum):
     COMPUTER_VS_COMPUTER = auto()
@@ -47,17 +50,27 @@ class Game():
             # imprimo el tablero
             self._display_board()
             # si el juego ha terminado....
-            if self._is_game_over():
+            if self._has_winner_or_tie():
                 # muestra el resultado final 
                 self._display_result()
                 # salgo del bucle
                 break
 
-    def _display_move():
-        pass
+    def _display_move(self, player):
+        print(f'\n{player.name} ({player.char}) has move in column {player.last_move}')
 
-    def _display_board():
-        pass
+    def _display_board(self):
+        # imprirmir el tablero en su estado actual
+        #obtenemos una matriz de caracteres a partir del tablero
+        matrix = self.board.as_matrix()
+        matrix = reverse_matrix(matrix)
+        #crear la tabla de beatifultable
+        bt = BeautifulTable()
+        for col in matrix:
+            bt.columns.append(col)
+        bt.columns.header = [str(i) for i in range(BOARD_LENGTH)]
+        # Imprimirla
+        print(bt)
 
     def _is_game_over(self):
         # el juego se acaba cuando hay vencedor
@@ -71,8 +84,13 @@ class Game():
         else:
             return False
 
-    def _display_result():
-        pass
+    def _display_result(self):
+        winner = self.match.get_winner(self.board)
+        if winner != None:
+            print (f'\n{winner.name} ({winner.char}) wins!!!')
+        else:
+            print(f'\nA tie between {self.match.get_player("x"). name} (x) and {self.match.get_player("o").name}')
+
 
     def _configure_by_user(self):
         # Le pido al usuario, los valores que el quiere para tipo de partoda y nivel de dificultad
@@ -81,6 +99,21 @@ class Game():
 
         # crear la partida
         self.match = self._make_match()
+
+    def _make_match(self):
+        # PLayer 1 siempre robotico
+
+        if self.round_type == RoundType.COMPUTER_VS_COMPUTER:
+            #son los jugaodres roboticos
+            player1 = Player('T-X')
+            player2 = Player('T-1000')
+        else:
+            # ord vs humano
+            player1 = Player('T-800')
+            player2 = HumanPlayer(name = input('Enter your name, puny, Human: '))
+
+        return Match(player1, player2)
+
 
     def _get_round_type(self):
         # Preguntar al usuario
@@ -99,16 +132,3 @@ class Game():
         else:
             return RoundType.COMPUTER_VS_HUMAN
 
-    def _make_match(self):
-        # PLayer 1 siempre robotico
-
-        if self.round_type == RoundType.COMPUTER_VS_COMPUTER:
-            #son los jugaodres roboticos
-            player1 = Player('T-X')
-            player2 = Player('T-1000')
-        else:
-            # ord vs humano
-            player1 = Player('T-800')
-            player2 = HumanPlayer(name = input('Enter your name, puny, Human: '))
-
-        return Match(player1, player2)
