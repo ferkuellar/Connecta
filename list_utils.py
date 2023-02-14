@@ -123,3 +123,21 @@ def all_same(l):
                 same = False
                 break
         return same
+    
+def collapse_list(l, empty = '.'):
+    # concatena todas las cadenas de la lista en una sola lista
+    collapsed = ''
+    for elt in l:
+        if elt == None:
+            collapsed = collapsed + empty
+        else:
+            collapsed = collapsed + elt
+    return collapsed
+
+def collapse_matrix(m, empty = '.', fence = '|'):
+    # concatena todas las cadenas en una sola separada por |
+
+    collapsed = ''
+    for elt in m:
+        collapsed = collapsed + fence + collapse_list(elt, empty)
+    return collapsed[1:]
