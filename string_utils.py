@@ -1,8 +1,12 @@
-def test_explode_string():
-    assert explode_string('Han') == ['H', 'a', 'n']
-    assert explode_string('') == []
+def explode_string(a_string):
+    # transforma una cadena de caracteres 'Han' => ['H', 'a', 'n']
+    
+    return list(a_string)
 
-def test_explode_list_of_strings():
-    assert explode_list_of_strings(['Han', 'Solo']) == [['H', 'a', 'n'], ['S','o', 'l', 'o']]
-    assert explode_list_of_strings(['', '', '']) == [[],[],[]]
-    assert explode_list_of_strings([]) == []
+def explode_list_of_strings(list_of_strings):
+    # aplica explode_string a cadena de la lista
+
+    result = []
+    for each_string in list_of_strings:
+        result.append(explode_string(each_string))
+    return result

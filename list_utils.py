@@ -141,3 +141,20 @@ def collapse_matrix(m, empty = '.', fence = '|'):
     for elt in m:
         collapsed = collapsed + fence + collapse_list(elt, empty)
     return collapsed[1:]
+
+def replace_all_in_list(original, old, new):
+    # cambia todas las ocurrencias de old por new
+    result = []
+    for elt in original:
+        if elt == old:
+            result.append(new)
+        else:
+            result.append(elt)
+    return result
+
+def replace_all_in_matrix(original, old, new):
+    # aplica replace_all_in_matrix a todas las listas
+    result = []
+    for each_list in original:
+        result.append(replace_all_in_list(each_list, old, new))
+    return result
