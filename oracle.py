@@ -5,7 +5,8 @@ from settings import BOARD_LENGTH
 
 class ColumnClassification(Enum):
     FULL    = -1    # imposible
-    MAYBE   = 1     # indeseable
+    LOSE    = 1     # muy indeseable
+    MAYBE   = 10    # indeseable
     WIN     = 100   # La mejor opcion: gano por mucho
 
 class ColumnRecommendation():
@@ -55,8 +56,23 @@ class SmartOracle(BaseOracle):
         recommendation = super()._get_column_recommendation(board, index, player)
         if recommendation.classification == ColumnClassification.MAYBE:
             #se puede mejorar
-            recommendation = self._is_wining_move(board, index, player)
-            return recommendation
+            if self._is_wining_move(board, index, player):
+                recommendation.classification = ColumnClassification.WIN
+            elif self._is_losing_move(board, index, player):
+                recommendation.classification = ColumnClassification.LOSE
+        return recommendation
+    
+    def _is_losing_move(self, board, index, player):
+        # si player juega en index ¿genera una jugada vencedora para el oponente en alguna de las columnas?
+
+        tmp = self._play_on_tmp_board(board, index, player)
+
+        will_lose = False
+        for i in range(0, BOARD_LENGTH):
+            if self._is_wining_move(tmp, i, player.opponet):
+                will_lose = True
+                break
+        return will_lose
         
     def _is_wining_move(self, board, index, player):
         # determina si al jugar una posicion, nos llevaria a ganar de inmediato

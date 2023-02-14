@@ -40,10 +40,10 @@ class Player():
         # pregunta al oraculo y devuelve la mejor opcion
 
         # obtenemos las recomendaciones
-        recommendations = self._oracle.get_recommendation(board, self)
+        recommendation = self._oracle.get_recommendation(board, self)
         # seleccionamos la mejor
-        best = self._choose(recommendations)
-        return(best, recommendations)
+        best = self._choose(recommendation)
+        return(best, recommendation)
 
     def _choose(self, recomendations):
         # Quitamos la no validas
