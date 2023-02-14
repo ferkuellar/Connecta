@@ -48,8 +48,14 @@ class Player():
     def _choose(self, recomendations):
         # Quitamos la no validas
         valid = list(filter(lambda x : x.classification != ColumnClassification.FULL, recomendations))
-        # seeccionamos entre las iguales, una al azar
-        return random.choice(valid)  
+        # ordenamos por el valor de clasificiacion
+        valid = sorted(valid, key=lambda x: x.classification.value, reverse=True)
+        # si son todas iguales, agarro una al azar
+        if all_same(valid):
+            return random.choice(valid)
+        else:
+        # si no lo son todas iguales agarro la mas deseable(que sera la primera)
+            return valid[0]  
 
 class HumanPlayer(Player):
     def __init__(self, name, char = None):

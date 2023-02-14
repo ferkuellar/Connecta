@@ -1,5 +1,7 @@
 from oracle import *
 from square_board import SquareBoard
+from player import Player
+from settings import BOARD_LENGTH
 
 
 def test_base_oracle():
@@ -23,8 +25,28 @@ def test_equality():
     assert cr == cr # son identicos
     assert cr == ColumnRecommendation(2, ColumnClassification.MAYBE) # equivalentes
 
-    # no equivalentes
-    assert cr != ColumnRecommendation(1, ColumnClassification.MAYBE)
+    # no equivalentes(puesto que no tienen la misma clasificacion
     assert cr != ColumnRecommendation(2, ColumnClassification.FULL)
     assert cr != ColumnRecommendation(3, ColumnClassification.FULL)
 
+
+def test_is_winning_move():
+    winner = Player('Fernando', 'x')
+    loser = Player('Otto', 'o')
+
+    empty = SquareBoard()
+    almost = SquareBoard.fromList([['o', 'x', 'o', None],
+                                ['o', 'x', 'o', None],
+                                ['x', None, None, None],
+                                [None, None, None, None]])
+    oracle = SmartOracle()
+
+    # sobre tablero vacio
+    for i in range(0, BOARD_LENGTH):
+        assert oracle._is_wining_move(empty, i, winner) == False
+        assert oracle._is_wining_move(empty, i, loser) == False
+
+    # sobre el tablero de verdad
+    for i in range(0, BOARD_LENGTH):
+        assert oracle._is_wining_move(almost, i, loser) == False
+    assert oracle._is_wining_move(almost, 2, winner)

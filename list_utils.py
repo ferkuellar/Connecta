@@ -109,3 +109,17 @@ def reverse_matrix(matrix):
     for col in matrix:
         rm.append(reverse_list(col))
     return rm
+
+def all_same(l):
+    # devuelve True si todos los elementos de la lista son iguales o la lista vacia
+
+    if l == []:
+        return True
+    else:
+        same = True
+        first = l[0]
+        for elt in l:
+            if elt != first:
+                same = False
+                break
+        return same
