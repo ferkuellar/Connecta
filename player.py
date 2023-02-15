@@ -1,5 +1,9 @@
 from oracle import BaseOracle, ColumnClassification, ColumnRecommendation
 import random
+from list_utils import all_same
+from move import Move
+from settings import BOARD_LENGTH
+from beautifultable import BeautifulTable
 
 
 class Player():
@@ -30,11 +34,17 @@ class Player():
         # Juego en la mejor
         self._play_on(board, best.index, recommendations)
 
-    def _play_on(self, board, position):
+    def on_win(self):
+        pass
+
+    def on_lose(self):
+        pass
+
+    def _play_on(self, board, position, recomendations):
         # juega en la posicion
         board.add(self.char, position)
         # guardo mi ultima jugada
-        self.last_move = position
+        self.last_move = Move(position, board.as_code(), recomendations, self)
 
     def _ask_oracle(self, board):
         # pregunta al oraculo y devuelve la mejor opcion
@@ -72,7 +82,15 @@ class HumanPlayer(Player):
                 # si no lo es, jugamos donde ha dicho y salimos del bucle
                 pos = int(raw)
                 return(ColumnRecommendation(pos, None), None)
-            
+
+class ReportingPlayer(Player):
+
+    def on_lose(self):
+        # le pide al oraculo que revise sus recomendaciones
+
+        board_code = self.last_move.board_code
+        position = self.last_move.position
+        self._oracle.update_to_bad(board_code, self, position)
 
 
 # funciones de validacion de indice de columna

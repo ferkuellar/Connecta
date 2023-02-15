@@ -1,11 +1,11 @@
 import pyfiglet
 from beautifultable import BeautifulTable
-from oracle import SmartOracle, BaseOracle
+from oracle import SmartOracle, BaseOracle, LearningOracle
 from settings import BOARD_LENGTH
 from square_board import SquareBoard
 from match import Match
 from list_utils import reverse_matrix
-from player import Player, HumanPlayer
+from player import ReportingPlayer, HumanPlayer
 from enum import Enum, auto
 
 
@@ -22,7 +22,7 @@ class Game():
 
     def __init__(self, 
                 round_type = RoundType.COMPUTER_VS_COMPUTER,
-                match = Match(Player('Chip'), Player('Chop'))):
+                match = Match(ReportingPlayer('Chip'), ReportingPlayer('Chop'))):
         # Guardar valores repetidos
         self.round_type = round_type
         # Tablero vacio sobre el que jugar
@@ -59,7 +59,7 @@ class Game():
                 break
 
     def _display_move(self, player):
-        print(f'\n{player.name} ({player.char}) has move in column {player.last_move}')
+        print(f'\n{player.name} ({player.char}) has move in column {player.last_move[0].position}')
 
     def _display_board(self):
         # imprirmir el tablero en su estado actual
@@ -132,15 +132,15 @@ class Game():
         # PLayer 1 siempre robotico
         _levels = {DifficultyLevel.LOW : BaseOracle(), 
                     DifficultyLevel.MEDIUM : SmartOracle,
-                    DifficultyLevel.HIGH : SmartOracle()}
+                    DifficultyLevel.HIGH : LearningOracle()}
         
         if self.round_type == RoundType.COMPUTER_VS_COMPUTER:
             #son los jugaodres roboticos
-            player1 = Player('T-X', oracle=SmartOracle())
-            player2 = Player('T-1000', oracle=SmartOracle())
+            player1 = ReportingPlayer('T-X', oracle = LearningOracle())
+            player2 = ReportingPlayer('T-1000', oracle = LearningOracle())
         else:
             # ordenador vs humano
-            player1 = Player('T-800', oracle=_levels[self._difficulty_level])
+            player1 = ReportingPlayer('T-800', oracle=_levels[self._difficulty_level])
             player2 = HumanPlayer(name = input('Enter your name, puny, Human: '))
 
         # creamos la partida

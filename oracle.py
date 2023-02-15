@@ -1,11 +1,12 @@
 from enum import Enum, auto
 from copy import deepcopy
+from settings import BOARD_LENGTH
 from square_board import SquareBoard
 from settings import BOARD_LENGTH
 
 class ColumnClassification(Enum):
     FULL    = -1    # imposible
-    LOSE    = 1     # muy indeseable
+    BAD     = 1     # muy indeseable
     MAYBE   = 10    # indeseable
     WIN     = 100   # La mejor opcion: gano por mucho
 
@@ -59,7 +60,7 @@ class SmartOracle(BaseOracle):
             if self._is_wining_move(board, index, player):
                 recommendation.classification = ColumnClassification.WIN
             elif self._is_losing_move(board, index, player):
-                recommendation.classification = ColumnClassification.LOSE
+                recommendation.classification = ColumnClassification.BAD
         return recommendation
     
     def _is_losing_move(self, board, index, player):
@@ -69,7 +70,7 @@ class SmartOracle(BaseOracle):
 
         will_lose = False
         for i in range(0, BOARD_LENGTH):
-            if self._is_wining_move(tmp, i, player.opponet):
+            if self._is_wining_move(tmp, i, player.opponent):
                 will_lose = True
                 break
         return will_lose
@@ -91,3 +92,35 @@ class SmartOracle(BaseOracle):
 
         #devuelvo la copia alterada
         return tmp
+    
+class MemoizingOracle(SmartOracle):
+    # el metodo get_recommendaion esta ahora memoizado (cada vez qye te llaman guardas los parametros junto con el resultado de un diccionario)
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._past_recommendations = {}
+
+    def _make_key(self, board_code, player):
+        # la clave debe combinar el board y el player de la forma mas sencilla posible
+        return f'{board_code.raw_code}@{player.char}'
+
+    def get_recommendation(self, board, player):
+        # creamos la clave
+        key = self._make_key(board.as_code(), player)
+        # Miramos en el cache: si no esta calculo y guardo en cache
+        if key not in self._past_recommendations:
+            self._past_recommendations[key] = super().get_recommendation(board, player)
+        # devuelve lo que esta en el cache
+        return self._past_recommendations[key]
+    
+class LearningOracle(MemoizingOracle):
+    
+    def update_to_bad(self, board_code, player, position):
+        # crear clave
+        key = self._make_key(board_code, player)
+        # obtener la clasificiacion erronea
+        recommendation = self.get_recommendation(SquareBoard.fromBoardCode(board_code), player)
+        # corregirla
+        recommendation[position] = ColumnRecommendation(position, ColumnClassification.BAD)
+        # sustituirla
+        self._past_recommendations[key] = recommendation

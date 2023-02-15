@@ -1,6 +1,6 @@
 from oracle import *
 from square_board import SquareBoard
-from player import Player
+from player import ReportingPlayer
 from settings import BOARD_LENGTH
 
 
@@ -31,8 +31,8 @@ def test_equality():
 
 
 def test_is_winning_move():
-    winner = Player('Fernando', 'x')
-    loser = Player('Otto', 'o')
+    winner = ReportingPlayer('Fernando', 'x')
+    loser = ReportingPlayer('Otto', 'o')
 
     empty = SquareBoard()
     almost = SquareBoard.fromList([['o', 'x', 'o', None],
