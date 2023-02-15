@@ -16,7 +16,7 @@ class SquareBoard():
 
     @classmethod
     def fromBoardCode(cls, board_code):
-        return cls.fromBoardCode(board_code.raw_code)
+        return cls.fromBoardRawCode(board_code.raw_code)
     
     @classmethod
     def fromBoardRawCode(cls, board_raw_code):

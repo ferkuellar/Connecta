@@ -1,6 +1,6 @@
 from oracle import *
 from square_board import SquareBoard
-from player import ReportingPlayer
+from player import Player
 from settings import BOARD_LENGTH
 
 
@@ -31,8 +31,8 @@ def test_equality():
 
 
 def test_is_winning_move():
-    winner = ReportingPlayer('Fernando', 'x')
-    loser = ReportingPlayer('Otto', 'o')
+    winner = Player('Fernando', 'x')
+    loser = Player('Otto', 'o')
 
     empty = SquareBoard()
     almost = SquareBoard.fromList([['o', 'x', 'o', None],
@@ -49,4 +49,19 @@ def test_is_winning_move():
     # sobre el tablero de verdad
     for i in range(0, BOARD_LENGTH):
         assert oracle._is_wining_move(almost, i, loser) == False
-    assert oracle._is_wining_move(almost, 2, winner)
+        assert oracle._is_wining_move(almost, 2, winner)
+
+def test_no_good_options():
+    x = Player('fernando', char = 'x')
+    o = Player('Otto', char = 'o', opponent = x)
+
+    oracle = SmartOracle()
+
+    maybe = SquareBoard.fromBoardRawCode('....|o...|....|....')
+    bad_and_full = SquareBoard.fromBoardRawCode('x...|oo..|o...|xoxo')
+    all_bad = SquareBoard.fromBoardRawCode('x...|oo..|o...|....')
+
+    assert oracle.no_good_options(maybe, x) == False
+    assert oracle.no_good_options(bad_and_full, x)
+    assert oracle.no_good_options(all_bad, x)
+

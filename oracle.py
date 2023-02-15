@@ -50,6 +50,18 @@ class BaseOracle():
 
         return ColumnRecommendation(index, classification)
     
+    def no_good_options(self, board, player):
+        #detecta que todas laas clasificaciones sean BAD o FULL
+        # obtener las clasificaciones
+        columnRecomendations = self.get_recommendation(board, player)
+        # comprobamos que todas sean del tipo correcto
+        result = True
+        for rec in columnRecomendations:
+            if (rec.classification == ColumnClassification.WIN) or (rec.classification == ColumnClassification.MAYBE):
+                result = False
+                break
+        return result
+    
 class SmartOracle(BaseOracle):
     def _get_column_recommendation(self, board, index, player):
         # Afina la clasificacion de super e intenta encontrar columnas WIN

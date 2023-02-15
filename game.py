@@ -59,7 +59,7 @@ class Game():
                 break
 
     def _display_move(self, player):
-        print(f'\n{player.name} ({player.char}) has move in column {player.last_move[0].position}')
+        print(f'\n{player.name} ({player.char}) has move in column {player.last_move.position}')
 
     def _display_board(self):
         # imprirmir el tablero en su estado actual

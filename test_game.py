@@ -11,7 +11,7 @@ def test_created_with_defualts():
     assert game.round_type != None
     assert game.match != None
     assert game.board != None
-    assert game.board.is_full() != False
+    assert game.board.is_full() == False
 
 def test_is_game_over():
     game = Game()
