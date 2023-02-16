@@ -14,7 +14,7 @@ class Player():
         self.char = char
         self._oracle = oracle
         self.opponent = opponent
-        self.last_move = None
+        self.last_moves = []
 
     @property
     def opponent(self):
@@ -43,8 +43,8 @@ class Player():
     def _play_on(self, board, position, recomendations):
         # juega en la posicion
         board.add(self.char, position)
-        # guardo mi ultima jugada
-        self.last_move = Move(position, board.as_code(), recomendations, self)
+        # guardo mi ultima jugada (siempre al principio de la lista)
+        self.last_moves.insert(0, Move(position, board.as_code(), recomendations, self))
 
     def _ask_oracle(self, board):
         # pregunta al oraculo y devuelve la mejor opcion
@@ -77,7 +77,7 @@ class HumanPlayer(Player):
         while True:
             # pedimos columna al humano
             raw = input('Select a column, puny Human: ')
-            #verificacmos que su respuesta sno sea una pendejada
+            #verificacmos que su respuesta no sea una pendejada
             if _is_int(raw) and _is_within_column_range(board, int(raw)) and _is_non_full_column(board, int(raw)):
                 # si no lo es, jugamos donde ha dicho y salimos del bucle
                 pos = int(raw)
@@ -88,9 +88,7 @@ class ReportingPlayer(Player):
     def on_lose(self):
         # le pide al oraculo que revise sus recomendaciones
 
-        board_code = self.last_move.board_code
-        position = self.last_move.position
-        self._oracle.update_to_bad(board_code, self, position)
+        self._oracle.backtrack(self.last_moves)
 
 
 # funciones de validacion de indice de columna

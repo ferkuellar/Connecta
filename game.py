@@ -23,10 +23,12 @@ class Game():
     def __init__(self, 
                 round_type = RoundType.COMPUTER_VS_COMPUTER,
                 match = Match(ReportingPlayer('Chip'), ReportingPlayer('Chop'))):
-        # Guardar valores repetidos
-        self.round_type = round_type
-        # Tablero vacio sobre el que jugar
+        # tablero vacio sobre el que vamos a jugar
         self.board = SquareBoard()
+        # tipo de partida
+        self.round_type = round_type
+        # match
+        self.match = match
     
     def start(self):
         # imprimo el nombre o logo del juego
@@ -59,7 +61,7 @@ class Game():
                 break
 
     def _display_move(self, player):
-        print(f'\n{player.name} ({player.char}) has move in column {player.last_move.position}')
+        print(f'\n{player.name} ({player.char}) has move in column {player.last_moves[0].position}')
 
     def _display_board(self):
         # imprirmir el tablero en su estado actual
@@ -78,8 +80,9 @@ class Game():
         # el juego se acaba cuando hay vencedor
         winner = self.match.get_winner(self.board)
         if winner != None:
-            # hay un vencedor
-            return True
+            winner.on_win()
+            winner.opponent.on_lose()
+            return True # hay un vencedor
         elif self.board.is_full():
             #empate
             return True

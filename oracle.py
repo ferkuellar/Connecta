@@ -127,12 +127,29 @@ class MemoizingOracle(SmartOracle):
     
 class LearningOracle(MemoizingOracle):
     
-    def update_to_bad(self, board_code, player, position):
+    def update_to_bad(self, move):
         # crear clave
-        key = self._make_key(board_code, player)
+        key = self._make_key(move.board_code, move.player)
         # obtener la clasificiacion erronea
-        recommendation = self.get_recommendation(SquareBoard.fromBoardCode(board_code), player)
+        recommendation = self.get_recommendation(SquareBoard.fromBoardCode(move.board_code), move.player)
         # corregirla
-        recommendation[position] = ColumnRecommendation(position, ColumnClassification.BAD)
+        recommendation[move.position] = ColumnRecommendation(move.position, ColumnClassification.BAD)
         # sustituirla
         self._past_recommendations[key] = recommendation
+
+    def backtrack(self, list_of_moves):
+        # repasa todas las juagadas y si encuentra una en la cual todo estaba perdidio, quiere decir que la anterior tiene que ser actualizada a BAD
+
+        #los moves estan en orden invesro(el primero sera el ultimo)
+        print('Learning....')
+        # por cada move .....
+        for move in list_of_moves:
+            # lo reclasifico a BAD
+            self.update_to_bad(move)
+            # evalua si esta todo perdido tras esta clasificacion
+            board = SquareBoard.fromBoardCode(move.board_code)
+            if not self.no_good_options(board, move.player):
+                # si no todo esatba perdido, salgo. si no sigo
+                break
+
+        print(f'Size of knowledgebase: {len(self._past_recommendations)}')
