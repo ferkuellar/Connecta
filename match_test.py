@@ -1,23 +1,11 @@
 import pytest
-from player import ReportingPlayer, HumanPlayer
+from player import Player
 from match import Match
 from square_board import SquareBoard
 
-fernando = None
-otto = None
+fernando = Player('Dr Fernando')
+otto = Player('Dr Octopus')
 
-
-def setup():
-    global fernando
-    fernando = HumanPlayer('Fernando')
-    global otto
-    otto = ReportingPlayer('Dr Cuellar')
-
-def teardown():
-    global fernando
-    fernando = None
-    global otto
-    otto = None
 
 def test_different_players_have_different_chars():
     t = Match(fernando, otto)

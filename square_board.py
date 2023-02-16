@@ -38,8 +38,8 @@ class SquareBoard():
         self._columns = [LinearBoard() for i in range(BOARD_LENGTH)]
 
     def __repr__(self):
-        return f'{self.__class__} : {self._columns}'
-
+        return f'{self.__class__}: {self._columns}'
+    
     def __len__(self):
         return len(self._columns)
     

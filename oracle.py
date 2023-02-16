@@ -6,7 +6,8 @@ from settings import BOARD_LENGTH
 
 class ColumnClassification(Enum):
     FULL    = -1    # imposible
-    BAD     = 1     # muy indeseable
+    LOSE    = 1     # derrota inminente
+    BAD     = 5     # muy indeseable
     MAYBE   = 10    # indeseable
     WIN     = 100   # La mejor opcion: gano por mucho
 
@@ -62,6 +63,14 @@ class BaseOracle():
                 break
         return result
     
+    # metodos que han de ser sobre escritos por mis subclases
+
+    def update_to_bad(self, move):
+        pass
+    
+    def backtrack(self, list_of_moves):
+        pass
+    
 class SmartOracle(BaseOracle):
     def _get_column_recommendation(self, board, index, player):
         # Afina la clasificacion de super e intenta encontrar columnas WIN
@@ -72,7 +81,7 @@ class SmartOracle(BaseOracle):
             if self._is_wining_move(board, index, player):
                 recommendation.classification = ColumnClassification.WIN
             elif self._is_losing_move(board, index, player):
-                recommendation.classification = ColumnClassification.BAD
+                recommendation.classification = ColumnClassification.LOSE
         return recommendation
     
     def _is_losing_move(self, board, index, player):

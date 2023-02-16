@@ -53,12 +53,38 @@ class Game():
             self._display_move(current_player)
             # imprimo el tablero
             self._display_board()
-            # si el juego ha terminado....
+            # si hay vencedor o  empate muestro el resutado final
             if self._has_winner_or_tie():
                 # muestra el resultado final 
                 self._display_result()
-                # salgo del bucle
-                break
+
+                if self.match.is_match_over():
+                    # se acabo
+                    break
+                else:
+                    #reseteamos el board
+                    self.board = SquareBoard()
+                    self._display_board()
+
+    def _display_result(self):
+        winner = self.match.get_winner(self.board)
+        if winner != None:
+            print (f'\n{winner.name} ({winner.char}) wins!!!')
+        else:
+            print(f'\nA tie between {self.match.get_player("x"). name} (x) and {self.match.get_player("o").name}')
+                
+    def _has_winner_or_tie(self):
+        # el juego se acaba cuando hay vencedor
+        winner = self.match.get_winner(self.board)
+        if winner != None:
+            winner.on_win()
+            winner.opponent.on_lose()
+            return True # hay un vencedor
+        elif self.board.is_full():
+            #empate
+            return True
+        else:
+            return False
 
     def _display_move(self, player):
         print(f'\n{player.name} ({player.char}) has move in column {player.last_moves[0].position}')
@@ -75,27 +101,6 @@ class Game():
         bt.columns.header = [str(i) for i in range(BOARD_LENGTH)]
         # Imprimirla
         print(bt)
-
-    def _is_game_over(self):
-        # el juego se acaba cuando hay vencedor
-        winner = self.match.get_winner(self.board)
-        if winner != None:
-            winner.on_win()
-            winner.opponent.on_lose()
-            return True # hay un vencedor
-        elif self.board.is_full():
-            #empate
-            return True
-        else:
-            return False
-
-    def _display_result(self):
-        winner = self.match.get_winner(self.board)
-        if winner != None:
-            print (f'\n{winner.name} ({winner.char}) wins!!!')
-        else:
-            print(f'\nA tie between {self.match.get_player("x"). name} (x) and {self.match.get_player("o").name}')
-
 
     def _configure_by_user(self):
         # Le pido al usuario, los valores que el quiere para tipo de partoda y nivel de dificultad

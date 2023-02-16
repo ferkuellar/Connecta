@@ -2,7 +2,7 @@ from oracle import BaseOracle, ColumnClassification, ColumnRecommendation
 import random
 from list_utils import all_same
 from move import Move
-from settings import BOARD_LENGTH
+from settings import BOARD_LENGTH, DEBUG
 from beautifultable import BeautifulTable
 
 
@@ -34,6 +34,16 @@ class Player():
         # Juego en la mejor
         self._play_on(board, best.index, recommendations)
 
+    def display_recommendations(self, board):
+        recs = map(lambda x: str(x.classification).split('.')[1].lower(), self._oracle.get_recommendation(board, self))
+
+        bt = BeautifulTable()
+        bt.rows.append(recs)
+
+        bt.columns.header =[str(i) for i in range(BOARD_LENGTH)]
+
+        print(bt)
+
     def on_win(self):
         pass
 
@@ -41,6 +51,9 @@ class Player():
         pass
 
     def _play_on(self, board, position, recomendations):
+        # imprimo recs en caso de debug
+        if DEBUG:
+            self.display_recommendations(board)
         # juega en la posicion
         board.add(self.char, position)
         # guardo mi ultima jugada (siempre al principio de la lista)

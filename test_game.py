@@ -15,10 +15,10 @@ def test_created_with_defaults():
 
 def test_is_game_over():
     game = Game()
-    win_x = SquareBoard.fromList([['x', 'o', None, None, ],
+    win_x = SquareBoard.fromList([['x', 'o', None, None,],
                                     ['o', 'x', None, None, ],
                                     ['x', 'o', 'x', 'o', ],
-                                    ['x', 'o', None, None, ],])
+                                    ['x', 'o', None, None ],])
 
     win_o = SquareBoard.fromList([['x', 'o', 'x', 'o', ],
                                     ['x', 'x', 'o', None, ],
@@ -39,10 +39,10 @@ def test_is_game_over():
     assert game._has_winner_or_tie() == True
 
     game.board = win_o
-    assert game._has_winner_or_tie() ==True
+    assert game._has_winner_or_tie() == True
 
     game.board = tie
-    assert game._has_winner_or_tie() ==True
+    assert game._has_winner_or_tie() == True
 
     game.board = unfinished
-    assert game._has_winner_or_tie() ==True
+    assert game._has_winner_or_tie() == False
